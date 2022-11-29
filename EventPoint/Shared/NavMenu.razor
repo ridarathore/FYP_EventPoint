@@ -1,0 +1,46 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Event Point</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="cities">
+                <span class="oi oi-plus" aria-hidden="true"></span> Manage City
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="trail">
+                <span class="oi oi-plus" aria-hidden="true"></span> Manage Category
+            </NavLink>
+        </div>
+    <div class="nav-item px-3">
+            <NavLink class="nav-link" href="pricetype">
+                <span class="oi oi-plus" aria-hidden="true"></span> Manage Price Types
+            </NavLink>
+        </div>
+    <div class="nav-item px-3">
+            <NavLink class="nav-link" href="vendors">
+                <span class="oi oi-plus" aria-hidden="true"></span> Manage Vendors
+            </NavLink>
+        </div>
+       
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

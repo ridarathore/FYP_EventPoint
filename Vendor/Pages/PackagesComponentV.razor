@@ -1,0 +1,121 @@
+﻿@page "/package"
+<h3>Manage Your Packages</h3>
+@using ClassLibraryDAL
+@using ClassLibraryEntity
+<div style="width:100%; height:100%; display:flex; flex-direction:row">
+    <div style="width:30%; height:100%;border:solid purple 1px;">
+        
+        
+@if (VenderService != null)
+        {
+            <EditForm Model="ModelPackages" OnSubmit="SubmitForm">
+                   
+                        <div>
+                        @foreach (var v in VenderService)
+                        {
+                               
+                            <input type="checkbox" @onchange="(e =>ClassLibraryDAL.CustomLogic.CheckboxClicked(v.services,e.Value))"/> @v.services
+                        <br />
+                        }
+                        </div>
+    <table>
+            <tr> 
+                <td> <label>Price</label> </td>
+                <td> 
+                    <InputText style="width: 100px" @bind-Value="ModelPackages.price" required></InputText>
+                </td>
+            </tr>
+            <tr>
+                <td> <label> Title </label> </td>
+                <td>
+                    <InputText style="width: 100px" @bind-Value="ModelPackages.PakageTitle" required></InputText>
+                </td>
+            </tr>
+            <tr>
+                <td> <label> Package Type</label> </td>
+                <td>
+                    <InputText style="width: 100px" @bind-Value="ModelPackages.pakageType" required></InputText>
+                </td>
+            </tr>
+            <tr>
+
+                 <button class="btn btn-outline-secondary" >Save New Package</button>
+                
+            </tr>
+            <tr>
+                @*<button class="btn btn-outline-danger" @onclick ="(e => OnDelete(pt.ptid))" >Delete Price Type</button>*@
+            </tr>
+        </table>
+</EditForm>
+}   
+    </div>
+<div  style="width:70%; height:100%;border:solid purple 1px;">
+    <table class="table table-secondary table-striped table-bordered text-center">
+    <thead class="thead thead-dark ">
+        <tr>
+        
+            <td>Package Title </td>
+            <td>Package</td>
+            <td>Price</td>
+            <td>Package Type</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+
+    @foreach(var pl in PackagesList )
+    {
+        <tr>
+            <td>@pl.PakageTitle</td>
+            <td>@pl.PakageDetails</td>
+            <td> @pl.price</td>
+            <td> @pl.pakageType</td>
+            <td><button class="btn btn-outline-danger" @onclick ="(e => OnDelete(pl.id))" >Delete</button></td>
+        </tr>
+        <tr> <br /></tr>
+    }
+</table>
+
+    </div>
+</div>
+
+@code {
+    //public static PackagesEntity ModelPackages;
+    public PackagesEntity? ModelPackages = new PackagesEntity();
+    public List<PackagesEntity> PackagesList{ get; set; }
+    public List<VenderServicesEntity> VenderService { get; set; }
+    public string VendorId = "1SgF9kEm";
+    public string MyList{ get; set; }
+    protected override void OnInitialized()
+    {
+        OnLoad();
+
+
+    }
+    public void SubmitForm()
+    {
+        CheckedList();
+        ModelPackages.PakageDetails = MyList;
+        ModelPackages.ven_id = VendorId;
+        ClassLibraryDAL.VendorDAL.SavePackage(ModelPackages);
+     ClassLibraryDAL.CustomLogic.DisposeList();
+        OnLoad();
+
+    }
+    public void OnDelete(string Id)
+    {
+        ClassLibraryDAL.VendorDAL.DeletePackage(Id);
+        OnLoad();
+    }
+    public void  OnLoad()
+    {
+     VenderService = ClassLibraryDAL.VendorDAL.GetVendorServices(VendorId);
+      this.PackagesList = ClassLibraryDAL.VendorDAL.GetPackagesId(VendorId);
+         
+       
+
+    }
+    public void CheckedList(){
+        MyList = ClassLibraryDAL.CustomLogic.checklist();
+        
+    }
+    }

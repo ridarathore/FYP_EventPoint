@@ -1,0 +1,82 @@
+﻿@page "/price/{id}"
+@using ClassLibraryDAL
+@using ClassLibraryEntity
+@inject NavigationManager nm;
+
+<h3>Update Price</h3>
+
+<EditForm Model="ModelProfileVendor" OnSubmit="UpdatePrice">
+    <table>
+        <tr>
+            <td>
+                <label>Vendor StartingPrice</label>
+            </td>
+            <td>
+                <InputText @bind-Value="ModelProfileVendor.startingPrice" required></InputText>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Vendor Pricetype</label>
+            </td>
+            <td>
+                <select @bind="@ModelProfileVendor.pricetype">
+                    @foreach (var p in PriceTypeList)
+                    {
+                        <option value="@p.ptid">@p.title</option>
+                    }
+                </select>
+                @*<InputText @bind-Value="ModelProfileVendor.pricetype"></InputText>*@
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Vendor Holiday</label>
+            </td>
+            <td>
+                <select @bind="@ModelProfileVendor.holiday">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+                @*<InputText @bind-Value="@ModelProfileVendor.holiday"></InputText>*@
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" class="btn btn-outline-success">Update Profile</button>
+            </td>
+        </tr>
+    </table>
+</EditForm>
+@code {
+    [Parameter] public string id { get; set; }
+    public static VendorEntity ModelProfileVendor;
+    public string PriceId { get; set; }
+    public List<PriceTypeEntity> PriceTypeList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+    public void OnLoad()
+    {
+        PriceTypeList = ClassLibraryDAL.PriceTypeDAL.GetPriceType();
+        ModelProfileVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V("1SgF9kEm");
+        //AreaList = ClassLibraryDAL.AreaDAL.GetArea(int.Parse(CityId));
+
+    }
+    public void UpdatePrice()
+    {
+        //ModelProfileVendor.pricetype = PriceId;
+        VendorDAL.UpdatePrice(ModelProfileVendor);
+        OnLoad();
+        nm.NavigateTo("/profile");
+    }
+
+    
+}

@@ -1,0 +1,49 @@
+﻿@page "/cities"
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+@inject NavigationManager nm
+
+<h3>Manage Cities</h3>
+<a class="btn btn-primary" href="/cities/edit/0">Add new City</a>
+<br /><br />
+<table class="table table-secondary table-striped table-bordered text-center">
+    <thead class="thead thead-dark ">
+        <tr>
+            <td>City ID</td>
+            <td>City Name</td>
+            <td>Ations</td>
+        </tr>
+    </thead>
+
+    @foreach(var city in CityList)
+    {
+        <tr>
+            <td>@city.cityid</td>
+            <td>@city.cityname</td>
+            <td>
+                <a class="btn btn-outline-primary" href="/cities/edit/@city.cityid">Edit City</a>
+                <button class="btn btn-outline-danger" @onclick="(e => OnDelete(city.cityid))">Delete City</button>
+                <a class="btn btn-outline-secondary" href="areas/@city.cityid">Add City Area</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@code {
+    public List<CityEntity> CityList{ get; set; }
+
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+
+    protected void OnLoad()
+    {
+        this.CityList = ClassLibraryDAL.CityDAL.GetCities();
+    }
+    public void OnDelete(string Id)
+    {
+        ClassLibraryDAL.CityDAL.DeleteCity(Id);
+        OnLoad();
+    }
+}

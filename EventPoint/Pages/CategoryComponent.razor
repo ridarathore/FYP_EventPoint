@@ -1,0 +1,49 @@
+﻿@page "/trail"
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+@inject NavigationManager nm
+
+
+<h3>Manage Categories</h3>
+<a class="btn btn-primary" href="/catedit/0">Add New Category</a>
+<br /><br />
+<table class="table table-secondary table-striped table-bordered text-center">
+    <thead class="thead thead-dark ">
+        <tr>
+            <td>Category ID</td>
+            <td>Category Name</td>
+            <td>Actions</td>
+        </tr>
+    </thead>
+
+    @foreach(var cat in CategoryList)
+    {
+        <tr>
+            <td>@cat.categoryid</td>
+            <td>@cat.categoryname</td>
+            <td>
+                <a class="btn btn-outline-primary" href="/catedit/@cat.categoryid">Edit Category</a>
+                <button class="btn btn-outline-danger" @onclick="(e => OnDelete(cat.categoryid))">Delete Category</button>
+                <a class="btn btn-outline-secondary" href="services/@cat.categoryid">Add Services</a>
+            </td>
+        </tr>
+    }
+</table>
+@code {
+        public List<CategoryEntity> CategoryList{ get; set; }
+        protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+
+    protected void OnLoad()
+    {
+        this.CategoryList = ClassLibraryDAL.CategoryDAL.GetCategories();
+    }
+    public void OnDelete(string Id)
+    {
+        ClassLibraryDAL.CategoryDAL.DeleteCategory(int.Parse(Id));
+        OnLoad();
+    }
+
+}

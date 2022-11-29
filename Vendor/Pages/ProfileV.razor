@@ -1,0 +1,174 @@
+﻿@page "/profile"
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+
+<h3>Manage Your Profile</h3>
+<div style="width:100%; display:flex; flex-direction:row;">
+<div style="width:50%">
+<table>
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="/personaldetail/@id"> Personal Details</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="/contactdetail/@id">Update Contact Details</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="/price/@id">Update Pricing Category</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="/address/@id">Update Address</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="/image/@id">Update Thumnail Information</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="/password/@id">Update Password </a>
+        </td>
+    </tr>
+</table>
+</div>
+<div style="width:50%">
+<EditForm Model="ModelProfileVendor">
+<table  class="table table-bordered table-primary">
+    <tr>
+        <td>
+            <label>Vendor Businessname: </label>
+        </td>
+        <td>
+                <label>@ModelProfileVendor.businessname</label>
+        </td>
+    </tr>
+    <tr>
+        <td >
+                <label>Vendor Ownername:</label>
+        </td>
+        <td>
+                <label>@ModelProfileVendor.ownername</label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <label>Vendor Address:</label>
+        </td>
+        <td>
+                <label> @ModelProfileVendor.address </label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <label>Vendor Phoneno:</label>
+        </td>
+        <td>
+                <label>@ModelProfileVendor.phoneno</label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <label>Vendor Weburl:</label>
+        </td>
+        <td>
+                <label>@ModelProfileVendor.weburl</label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <label>Vendor Email:</label>
+        </td>
+        <td>
+                <label >@ModelProfileVendor.email</label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <label>Vendor Landline:</label>
+        </td>
+        <td>
+                <label >@ModelProfileVendor.landline</label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <label>Vendor Description:</label>
+        </td>
+        <td>
+                <p>@ModelProfileVendor.description</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <label>Vendor Holiday:</label>
+        </td>
+        <td>
+                <label>@ModelProfileVendor.holiday</label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <label>Vendor City:</label>
+        </td>
+        <td>
+                <label>@ModelProfileVendor.City</label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>Vendor Area:</label>
+        </td>
+        <td>
+                <label>@ModelProfileVendor.area</label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>Vendor Category:</label>
+        </td>
+        <td>
+              <label>@ModelProfileVendor.Cat_Id</label>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>
+            <label>Vendor StartingPrice:</label>
+        </td>
+        <td>
+                <label>@ModelProfileVendor.startingPrice </label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>Vendor Pricetype:</label>
+        </td>
+        <td>
+            <label>@ModelProfileVendor.pricetype</label>
+        </td>
+    </tr>       
+</table>
+</EditForm>
+</div>
+</div>
+
+@code {
+    public string id = "1SgF9kEm";
+    public static VendorEntity ModelProfileVendor;
+    
+
+
+    protected override void OnInitialized()
+    {
+        ModelProfileVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V("1SgF9kEm");
+    }
+
+   
+}

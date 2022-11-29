@@ -1,0 +1,79 @@
+﻿@page "/userareas/{Id}"
+@using System.Collections.Generic;
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+@inject NavigationManager n
+<EditForm Model="@ModelArea">
+
+<InputSelect id="Area" @bind-Value="AreaId">
+    <option> --Select area--</option>
+        @foreach (var area in AreaList)
+        {
+            
+            <option value="@area.areaid">@area.area</option>
+        }
+    </InputSelect>
+
+    <InputSelect id="CategoryId" @bind-Value="CategoryId">
+        <option> --Select category--</option>
+        @foreach (var category in CategoryList)
+        {
+            <option value="@category.categoryid">@category.categoryname</option>
+        }
+    </InputSelect>
+    <input @bind-value="StartingPrice">
+   
+    <button class="btn"  @onclick="(e => FindVendorByCategoryAreaStartingPrice(AreaId,CategoryId,StartingPrice))">Find Vendor</button>
+
+</EditForm>
+
+@if (VendorList != null)
+{
+    foreach(var vendor in VendorList)
+    {
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@vendor.businessname</h5>
+                        <p class="card-text">@vendor.startingPrice @vendor.pricetype</p>
+                        <p class="card-text">@vendor.area</p>
+                        <a href="porfile/@vendor.ven_id" class="btn btn-primary">View Portfolio</a>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    }
+    
+}
+
+@code {
+    public List<AreaEntity> AreaList { get; set; }
+    public AreaEntity ModelArea { get; set; } = new AreaEntity();
+    public List<CategoryEntity> CategoryList { get; set; }
+    [Parameter] public string Id { get; set; }
+    public string AreaId { get; set; }
+    public string CategoryId { get; set; }
+    public string StartingPrice { get; set; }
+    public List<VendorEntity> VendorList { get; set; } 
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+
+    protected void OnLoad()
+    {
+        this.AreaList = ClassLibraryDAL.AreaDAL.GetArea(int.Parse(Id));
+        this.CategoryList = ClassLibraryDAL.CategoryDAL.GetCategories();
+        this.VendorList = ClassLibraryDAL.VendorDAL.GetAllVendorsByCityID(int.Parse(Id));
+    }    
+    public void FindVendorByCategoryAreaStartingPrice(string AreaId, string CategoryId,string StartingPriceID)
+    {
+
+        VendorList= ClassLibraryDAL.VendorDAL.FindVendorByAreaCategoryStartingPrice(Id, AreaId, CategoryId, StartingPriceID);
+       
+    }
+
+
+}

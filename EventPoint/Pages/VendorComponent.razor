@@ -1,0 +1,125 @@
+﻿@page "/vendors"
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+@inject NavigationManager n
+
+<h1>Vendors</h1>
+<h3>Filter record</h3>
+<div style="display: flex; flex-direction:row" class="dropdown">
+
+    <select @bind="@CityId" class="form-select" style="width:20%" required>
+        <option value="-1">Select City</option>
+        @foreach (var c in CityList)
+        {
+            <option value="@c.cityid">@c.cityname</option>
+        }
+    </select>
+
+    <select @bind="@CategoryId" class="form-select" style="width:20%" required>
+        <option value="-1">Select Category</option>
+        @foreach (var c in CategoryList)
+        {
+            <option value="@c.categoryid">@c.categoryname</option>
+        }
+    </select>
+
+    <select @bind="@StatusCheck" class="form-select" style="width:20%" required>
+        <option value="-1">Select Status</option>
+        <option value="1">Activated</option>
+        <option value="0">Deactivated</option>
+    </select>
+
+    <button class="btn btn-primary" style="width:15%" type="submit" @onclick="FilterData">Search</button>
+</div>
+<br />
+<br />
+@if (VendorList != null)
+{
+
+    <table class="table table-secondary table-striped table-bordered text-center">
+        <thead>
+            <tr>
+                <td>Vendor ID</td>
+                <td>Bussiness Name</td>
+                <td>Owner Name</td>
+                <td>Phone Number ID</td>
+                <td>Email</td>
+                <td>City</td>
+                <td>Category</td>
+                <td>Status</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+
+        @foreach (var vendor in VendorList)
+        {
+            <tr>
+                <td>@vendor.ven_id</td>
+                <td>@vendor.businessname</td>
+                <td>@vendor.ownername</td>
+                <td>@vendor.phoneno</td>
+                <td>@vendor.email</td>
+                <td>@vendor.City</td>
+                <td>@vendor.Cat_Id</td>
+                <td>@vendor.status</td>
+                <td>
+                    @*<button class = "btn btn-outline-secondary"  @onclick="(e => OnClick(vendor.ven_id,vendor.status))"> @state</button>*@
+                    <button class="btn btn-outline-danger" @onclick="(e => OnDelete(vendor.ven_id))">Remove</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
+
+@code {
+    public List<VendorEntity>? VendorList { get; set; }
+    public List<CityEntity> CityList { get; set; }
+    public List<CategoryEntity> CategoryList { get; set; }
+    public VendorEntity ven { get; set; }
+    public bool bit { get; set; }
+    public string state { get; set; }
+    public string? status { get; set; }
+    public int s { get; set; }
+    public string? CityId { get; set; }
+    public string? CategoryId { get; set; }
+    public string? StatusCheck { get; set; }
+
+    private int count = 0;
+
+    protected override void OnInitialized()
+    {
+        Onload();
+    }
+    protected void Onload()
+    {
+        CityList = ClassLibraryDAL.CityDAL.GetCities();
+        CategoryList = ClassLibraryDAL.CategoryDAL.GetCategories();
+        VendorList = null;
+    }
+
+    public void OnDelete(string id)
+    {
+        ClassLibraryDAL.VendorDAL.DeleteVendor(id);
+        Onload();
+    }
+
+    public void FilterData()
+    {
+        VendorList = null;
+        if (CityId != null && CategoryId != null && StatusCheck != null)
+        {
+            if (CityId != "-1" && CategoryId != "-1" && StatusCheck != "-1")
+            {
+                VendorList = ClassLibraryDAL.VendorDAL.GetFilteredVendor(CityId, CategoryId, StatusCheck);
+            }
+        }
+
+        else
+        {
+
+        }
+
+    }
+}

@@ -1,0 +1,39 @@
+﻿@page "/personaldetail/{id}"
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+
+<h3>Personal Details</h3>
+    <table>
+        <tr>
+            <td>
+                <label>Vendor Businessname</label>
+            </td>
+            <td>
+                <input @bind="ModelProfileVendor.businessname" disabled></input>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Vendor Ownername</label>
+            </td>
+            <td>
+                <input @bind="ModelProfileVendor.ownername" disabled></input>
+            </td>
+        </tr>
+    </table>
+@code {
+    [Parameter] public string id{ get; set; }
+    public static VendorEntity ModelProfileVendor;
+   
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+    public void OnLoad()
+    {
+      
+        ModelProfileVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V("1SgF9kEm");
+
+    }
+   
+}

@@ -1,0 +1,62 @@
+﻿@page "/catedit/{id}"
+
+
+@inject NavigationManager nm;
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+
+<h3>@title</h3>
+@if (ModelCategory != null)
+{
+    <EditForm Model="ModelCategory" OnSubmit="SubmitForm">
+    <table>
+        <tr>
+            <td><label>Category ID</label></td>
+            <td><input disabled @bind-value="ModelCategory.categoryid"></td>
+        </tr>
+        <tr>
+            <td><label>Category Name</label></td>
+            <td><InputText @bind-Value="ModelCategory.categoryname" required></InputText></td>
+        </tr>
+        <tr>
+            <td><button class="btn btn-outline-success">@title</button></td>
+        </tr>
+    </table>
+</EditForm>
+}
+@code {
+    [Parameter] public string? Id{ get; set; }
+    public string? title{ get; set; }
+
+    public CategoryEntity? ModelCategory;
+
+    protected override void OnInitialized()
+    {
+        if(Id == "0" )
+        {
+            ModelCategory = new CategoryEntity();
+            title = "Add New Category";
+        }
+        else
+        {
+            ModelCategory = ClassLibraryDAL.CategoryDAL.GetCategoryById(int.Parse(Id));
+            title = "Update Category";
+
+        }
+    }
+    public void SubmitForm()
+    {
+        if (Id == "0")
+        {
+            ClassLibraryDAL.CategoryDAL.SaveCategories(ModelCategory);
+            nm.NavigateTo("/trail");
+        }
+        else
+        {
+            ClassLibraryDAL.CategoryDAL.UpdateCategory(ModelCategory);
+            nm.NavigateTo("/trail");
+        }
+
+    }
+    
+}

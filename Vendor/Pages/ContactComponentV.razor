@@ -1,0 +1,77 @@
+﻿@page "/contactdetail/{id}"
+@inject NavigationManager nm;
+
+@using ClassLibraryDAL
+@using ClassLibraryEntity
+<h3>Update Contact Details</h3>
+
+<EditForm Model="ModelProfileVendor" OnSubmit="UpdateContact">
+<table>
+    <tr>
+        <td>
+            <label>Vendor Phoneno</label>
+        </td>
+        <td>
+            <InputText @bind-Value="ModelProfileVendor.phoneno" required></InputText>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>Vendor Weburl</label>
+        </td>
+        <td>
+            <InputText @bind-Value="ModelProfileVendor.weburl"></InputText>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>Vendor Email</label>
+        </td>
+        <td>
+            <InputText @bind-Value="ModelProfileVendor.email" disabled></InputText>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>Vendor Landline</label>
+        </td>
+        <td>
+            <InputText @bind-Value="ModelProfileVendor.landline" required></InputText>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label>Vendor Description</label>
+        </td>
+        <td>
+            <InputTextArea @bind-Value="ModelProfileVendor.description" required></InputTextArea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button type="submit" class="btn btn-outline-success">Update Profile</button>
+        </td>
+    </tr>
+</table>
+</EditForm>
+@code {
+    [Parameter] public string id { get; set; }
+    public static VendorEntity ModelProfileVendor;
+   
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+    public void OnLoad()
+    {
+      
+        ModelProfileVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V("1SgF9kEm");
+
+    }
+    public void UpdateContact()
+    {
+        VendorDAL.UpdateContact(ModelProfileVendor);
+        OnLoad();
+        nm.NavigateTo("/profile");
+    }
+}

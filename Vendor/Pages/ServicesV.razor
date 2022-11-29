@@ -1,0 +1,73 @@
+﻿@page "/services"
+@using ClassLibraryDAL
+@using ClassLibraryEntity
+@inject NavigationManager n
+
+<h3>Manage Your Services</h3>
+ <div style="width:100%; height:100%; display:flex; flex-direction:row;">
+<div style="width:50%; height:100%">
+    @foreach(var s in ServicesList)
+    {
+        <input type="checkbox" @onchange="(e =>ClassLibraryDAL.CustomLogic.CheckboxClicked(s.Services,e.Value))"/> @s.Services
+        <br />
+    }
+    <button type="submit" @onclick="UpdateServicesList">Update List</button>-
+</div>
+<div style="width:50%; height:100%; ">
+    <h2>Services You Added</h2>
+    <table class="table table-bordered">
+         @foreach(var s in VenderService)
+        {
+        <tr>
+        <td> <label >@s.services</label> </td>
+      
+        </tr>  }
+            @*@foreach(var s in VenderService)
+            {
+                <tr>
+                <td> <label >@s.services</label> </td>     </tr>
+            }*@
+       
+    </table>
+</div>
+</div>  
+@code {
+    public string MyList{ get; set; }
+    public VenderServicesEntity ModelVendorServices { get; set; } = new VenderServicesEntity();
+    public List<ServiceEntity> ServicesList{ get; set; }
+    public List<VenderServicesEntity> VenderService { get; set; }
+    public ServiceEntity s { get; set; }
+    public string CatId { get; set; }
+    public string VendorId = "1SgF9kEm";
+    protected override void OnInitialized()
+    {
+        s = ClassLibraryDAL.CategoryDAL.GetCategoryId(VendorId);
+        CatId = s.Cat_Id;
+        OnLoad();
+        // ModelVendorServices = 
+    }
+    public void OnLoad()
+    {
+        ServicesList = ClassLibraryDAL.ServicesDAL.GetServices(int.Parse(CatId));
+        VenderService = ClassLibraryDAL.VendorDAL.GetVendorServices(VendorId);
+        
+    }
+    public void UpdateServicesList()
+    {
+        CheckedList();
+        ModelVendorServices.services = MyList;
+        ClassLibraryDAL.VendorDAL.SaveAndUpdateVendorServices(VendorId, MyList);
+        ClassLibraryDAL.CustomLogic.DisposeList();
+        OnLoad();
+        //n.NavigateTo("/services");
+    }
+    public void AddServices()
+    {
+
+    }
+
+    private void CheckedList(){
+        MyList = ClassLibraryDAL.CustomLogic.checklist();
+        
+    }
+}

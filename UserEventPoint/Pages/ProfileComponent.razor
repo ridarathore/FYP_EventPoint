@@ -1,0 +1,146 @@
+﻿@page "/porfile/{Id}"
+@using ClassLibraryDAL
+@using ClassLibraryEntity
+<h3>
+    @*Vendor Main page*@
+    <div class="card mb-3  p-3 mb-2 bg-warning text-dark">
+        <p class="card-text-top p-3 " alt="...">
+            @ModelVendor.businessname  </p>
+  <p>Starting From: @ModelVendor.startingPrice</p>
+
+</div>
+    @*Vendor description*@
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">About</h5>
+                    <p class="card-text">@ModelVendor.description</p>
+                    
+                </div>
+            </div>
+        </div>
+        @*Vendor contact*@
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Contact</h5>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Contact Vendor</button>
+
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                        <div class="offcanvas-header">
+                            <h5 id="offcanvasRightLabel">@ModelVendor.businessname</h5>
+                            
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <div class="row">
+                                <div class="col-mb-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@ModelVendor.businessname</h5>
+                                            <p class="card-text">@ModelVendor.email</p>
+                                            <label class="">@ModelVendor.ownername</label>
+                                            <label class="card-text">@ModelVendor.phoneno</label>
+                                            <label class="card-text">@ModelVendor.landline</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Vendor services*@
+    @if (ModelServices.services != null)
+    {
+        <div class="card text-center">
+            <div class="card-header">
+                Featured
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Services</h5>
+                @foreach (var services in ModelServices.services)
+                {
+                    <label>
+                        @ModelServices.services
+                    </label>
+                }
+
+            </div>
+
+        </div>
+    }
+    @*Vendor packages*@
+    @if (PackageList != null)
+    {
+        <div class="card">
+            <div class="card-header">
+               Packages
+            </div>
+            <div class="card-body">
+                @foreach (var packages in PackageList)
+                {
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">@packages.PakageTitle</h5>
+
+
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1" aria-controls="offcanvasRight">View Package</button>
+
+                                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1" aria-labelledby="offcanvasRightLabel">
+                                        <div class="offcanvas-header">
+                                            <h5 id="offcanvasRightLabel">@packages.PakageTitle</h5>
+
+                                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                        </div>
+                                        <div class="offcanvas-body">
+                                            <div class="row">
+                                                <div class="col-mb-6">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">@packages.PakageDetails</h5>
+                                                            <p class="card-text">@packages.price @packages.pakageType</p>
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+            </div>
+        </div>
+      
+      
+    }
+    
+
+</h3>
+
+@code {
+    [Parameter] public string Id { get; set; }
+    VendorEntity ModelVendor = new VendorEntity();
+    VenderServicesEntity ModelServices = new VenderServicesEntity();
+   List<PackagesEntity> PackageList = new List<PackagesEntity>();
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+    protected void OnLoad()
+    {
+        ModelVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V(Id);
+        ModelServices = ClassLibraryDAL.ServicesDAL.GetServiceByVendorId(Id);
+        PackageList = ClassLibraryDAL.PackagesDal.GetPackagesById(Id);
+    }
+}

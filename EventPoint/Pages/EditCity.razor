@@ -1,0 +1,62 @@
+﻿@page "/cities/edit/{Id}"
+
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+@inject NavigationManager nm;
+
+<h3>@title</h3>
+@if (model_city != null)
+{
+    <EditForm Model="model_city" OnSubmit="SubmitForm">
+    <table>
+        <tr>
+            <td><label>City ID</label></td>
+            <td><input disabled @bind-value="model_city.cityid"></td>
+        </tr>
+        <tr>
+            <td><label>City Name</label></td>
+            <td><InputText @bind-Value="model_city.cityname" required></InputText></td>
+        </tr>
+        <tr>
+            <td><button class="btn btn-outline-success">@title</button></td>
+        </tr>
+    </table>
+</EditForm>
+}
+@code {
+    [Parameter] public string? Id{ get; set; }
+    public string? title{ get; set; }
+
+    public CityEntity? model_city;
+
+    protected override void OnInitialized()
+    {
+        if(Id == "0" )
+        {
+            model_city = new CityEntity();
+            title = "Add New City";
+        }
+        else
+        {
+            model_city = ClassLibraryDAL.CityDAL.GetCityById(Id);
+            title = "Update City";
+
+        }
+    }
+    public void SubmitForm()
+    {
+        if (Id == "0")
+        {
+            ClassLibraryDAL.CityDAL.AddNewCity(model_city);
+            nm.NavigateTo("/cities");
+        }
+        else
+        {
+            ClassLibraryDAL.CityDAL.UpdateCity(model_city);
+            nm.NavigateTo("/cities");
+        }
+
+    }
+    
+}
+

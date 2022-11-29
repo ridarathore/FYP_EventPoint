@@ -1,0 +1,79 @@
+﻿@page "/image/{id}"
+@using ClassLibraryDAL
+@using ClassLibraryEntity
+@inject NavigationManager nm;
+
+
+<h3>Image Component </h3>
+
+
+<EditForm Model="ModelProfileVendor" OnSubmit="UpdateProfile">
+    <table>
+        <tr>
+            <td>
+                <label>Vendor Imageurl</label>
+            </td>
+            <td>
+                <InputText @bind-Value="ModelProfileVendor.imageurl" required></InputText>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Vendor Thumnail</label>
+            </td>
+            <td>
+                <InputText @bind-Value="ModelProfileVendor.thumnail" required></InputText>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Vendor Icon</label>
+            </td>
+            <td>
+                <InputText @bind-Value="ModelProfileVendor.icon" required></InputText>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>NO ACTION ADDED IN THIS COMPONENT</label>
+                @*<button  class="btn btn-outline-success">Update Profile</button>*@
+            </td>
+        </tr>
+    </table>
+</EditForm>
+@code {
+    [Parameter] public string id{ get; set; }
+    public static VendorEntity ModelProfileVendor;
+    public string Day { get; set; }
+    public string CityId { get; set; }
+    public string AreaId { get; set; }
+    public string CategoryId { get; set; }
+    public string PriceId { get; set; }
+    public bool ShowPersonalInformation { get; set; }
+    public bool ShowContactInformation { get; set; }
+    public bool ShowPriceInformation { get; set; }
+    public bool ShowAddressInformation { get; set; }
+    public bool ShowImageInformation { get; set; }
+    public bool ChangePassword { get; set; }
+    public List<CityEntity> CityList { get; set; }
+    public List<AreaEntity> ModelAreaList { get; set; }
+    public List<CategoryEntity> CategoryList { get; set; }
+    public List<PriceTypeEntity> PriceTypeList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+    public void OnLoad()
+    {
+        ModelProfileVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V("1SgF9kEm");
+        //AreaList = ClassLibraryDAL.AreaDAL.GetArea(int.Parse(CityId));
+
+    }
+    public void UpdateProfile()
+    {
+        VendorDAL.UpdateProfile(ModelProfileVendor);
+        OnLoad();
+        nm.NavigateTo("/profile");
+    }
+}

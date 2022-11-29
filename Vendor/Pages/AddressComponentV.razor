@@ -1,0 +1,81 @@
+﻿@page "/address/{id}"
+@using ClassLibraryDAL
+@using ClassLibraryEntity
+@inject NavigationManager nm;
+
+
+<h3>Update Address</h3>
+
+
+<EditForm Model="ModelProfileVendor" OnSubmit="UpdateAddress">
+    <table>
+        <tr>
+            <td>
+                <label>Vendor City</label>
+            </td>
+            <td>
+               
+                <InputText @bind-Value="ModelProfileVendor.City" disabled></InputText>              
+
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Vendor Area</label>
+            </td>
+            <td>
+                @*@if(ModelAreaList!=null){
+                <select @bind="@AreaId" class="form-select"  required>
+                <option value="-1">Select Area</option>
+                @foreach (var a in ModelAreaList)
+                {
+                <option value="@a.areaid">@a.area disabled</option>
+                }
+                </select>
+                }*@
+                <InputText @bind-Value="ModelProfileVendor.area" disabled></InputText>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Vendor Address</label>
+            </td>
+            <td>
+                <InputText @bind-Value="ModelProfileVendor.address" required></InputText>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" class="btn btn-outline-success">Update Profile</button>
+            </td>
+        </tr>
+
+    </table>
+</EditForm>
+@code {
+    [Parameter] public string id{ get; set; }
+    public static VendorEntity ModelProfileVendor;
+    public CityEntity CityList { get; set; }
+    public List<AreaEntity> ModelAreaList { get; set; }
+    public string CityId { get; set; }
+    public string AreaId { get; set; }
+    protected override void OnInitialized()
+    {
+
+        OnLoad();
+    }
+    public void OnLoad()
+    {
+
+        ModelProfileVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V("1SgF9kEm");
+
+    }
+    public void UpdateAddress()
+    {
+        VendorDAL.UpdateAddress(ModelProfileVendor);
+        OnLoad();
+        nm.NavigateTo("/profile");
+    }
+}

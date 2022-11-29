@@ -1,0 +1,82 @@
+﻿@page "/pricetype"
+
+@inject NavigationManager n
+@using ClassLibraryDAL
+@using ClassLibraryEntity
+
+<h3>Price Type</h3>
+
+<EditForm Model="ModelPriceType" OnSubmit="SavePriceType">
+    <InputText @bind-Value="ModelPriceType.ptid" Disabled></InputText>
+    <InputText @bind-Value="ModelPriceType.title" required></InputText>
+    <button type="submit" class="btn btn-outline-success">@Buttonname</button>
+</EditForm>
+
+<br /><br /><br />
+<table class="ttable table-secondary table-striped table-bordered text-center">
+        <thead class="thead-dark">
+            <tr>
+                <th> Price Type ID </th>
+                <th>  Price Type Title </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        @foreach (var pt in PriceTypeList)
+        {
+            <tr>
+                <td>@pt.ptid</td>
+                <td>@pt.title</td>
+                <td>       
+                  <button  class="btn btn-outline-primary" @onclick="(e=>EditPriceType(pt.title,pt.ptid))">Edit Price Type</button>
+                   <button class="btn btn-outline-danger" @onclick ="(e => OnDelete(pt.ptid))" >Delete Price Type</button>
+                </td>
+            </tr>
+        }
+</table>
+
+
+@code {
+    public string? id { get; set; }
+    private List<PriceTypeEntity> PriceTypeList{ get; set; }
+    private PriceTypeEntity? ModelPriceType{ get; set; }
+    private string? Buttonname{ get; set; }
+
+    protected override void OnInitialized()
+    {
+        ModelPriceType = new PriceTypeEntity();
+        Onload();
+    }
+    protected void Onload()
+    {
+        Buttonname = "Save";
+        this.PriceTypeList = ClassLibraryDAL.PriceTypeDAL.GetPriceType();
+    }
+    public void OnDelete(string Id)
+    {
+        ClassLibraryDAL.PriceTypeDAL.DeletePriceType(Id);
+        Onload();
+    }
+    private void SavePriceType()
+    {
+        if (Buttonname == "Save")
+        {
+            //ModelPriceType.ptid = id.ToString();
+            PriceTypeDAL.SavePriceType(ModelPriceType);
+            ModelPriceType = new PriceTypeEntity();
+            Onload();
+        }
+        else
+        {
+            //ModelPriceType.ptid = id.ToString();
+            PriceTypeDAL.UpdatePriceType(ModelPriceType);
+            ModelPriceType = new PriceTypeEntity();
+            Onload();
+        }
+    }
+    private void EditPriceType(string title,string pid)
+    {
+        Buttonname = "Update";
+        ModelPriceType.title = title;
+        ModelPriceType.ptid = pid;
+    }
+}
