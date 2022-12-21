@@ -3,10 +3,6 @@
 @inject NavigationManager n
 @using ClassLibraryDAL
 @using ClassLibraryEntity
-
-<h3>Add Area for CityID: @Id</h3>
-@*<a class="btn btn-primary" href="/areas/edit/@Id/0">Add New Area</a>*@
-
 <EditForm Model="ModelArea" OnSubmit="SaveArea">
     <InputText @bind-Value="ModelArea.areaid" Disabled></InputText>
     <InputText @bind-Value="ModelArea.area" required></InputText>

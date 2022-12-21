@@ -1,0 +1,59 @@
+﻿@page "/signup"
+<style>
+    .hello {
+        border: 1px solid black;
+        border-radius: 10px;
+        background-color: lightgray;
+        padding-left: 40px;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    .inputs {
+        background-color: transparent;
+        border-radius: 5px;
+        padding-left: 20px;
+        padding-right: 80px;
+        /* font-size: 9px; */
+    }
+
+    .buttons {
+        border-radius: 10px;
+        background-color: orange;
+        border: none;
+        color: white;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+        .buttons:hover {
+            background-color: white;
+            color: black;
+        }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 hello shadow-lg ">
+            <h2 style="padding-top: 70px;">
+                Account for EventPoint
+            </h2>           
+
+            <input class="inputs shadow-lg" placeholder="Enter First Name"><br><br>
+            <input class="inputs shadow-lg" placeholder="Enter Last Name"><br><br>
+            <input class="inputs shadow-lg" placeholder="Phone No"><br><br>
+            <input class="inputs shadow-lg" placeholder="Create Password"><br><br>
+            <input class="inputs shadow-lg" placeholder="Re-enter Password"><br><br>
+
+            <input class="shadow-lg" type="checkbox">Yes, I agree to <a href="#">EventPoint services</a>,including <a href="#">user Agreement</a><br /> and <a href="#">Privacy Policy</a><br><br>
+            <button class="buttons">Register</button><br><br>
+            <a href="#">Back to Home</a>
+
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

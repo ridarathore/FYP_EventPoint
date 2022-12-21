@@ -1,0 +1,10 @@
+﻿@page "/userareas/{Id}"
+@using System.Collections.Generic;
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+@inject NavigationManager n
+<FilterAreaCategoryComponent2 Id="@Id"></FilterAreaCategoryComponent2>
+@code {
+   
+    [Parameter] public string Id { get; set; }
+}

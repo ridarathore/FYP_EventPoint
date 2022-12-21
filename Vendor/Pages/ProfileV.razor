@@ -2,45 +2,47 @@
 @using ClassLibraryEntity
 @using ClassLibraryDAL
 
-<h3>Manage Your Profile</h3>
-<div style="width:100%; display:flex; flex-direction:row;">
-<div style="width:50%">
-<table>
-    <tr>
-        <td>
-            <a class="btn btn-primary" href="/personaldetail/@id"> Personal Details</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a class="btn btn-primary" href="/contactdetail/@id">Update Contact Details</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a class="btn btn-primary" href="/price/@id">Update Pricing Category</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a class="btn btn-primary" href="/address/@id">Update Address</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a class="btn btn-primary" href="/image/@id">Update Thumnail Information</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a class="btn btn-primary" href="/password/@id">Update Password </a>
-        </td>
-    </tr>
-</table>
+
+
+<h3 class="text-center">Manage Your Profile</h3>
+
+
+    
+
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 pr-2">
+            <a class="btn btn-primary" style="width:250px;background-color:rebeccapurple" href="/personaldetail/@id">Personal Details</a>
+
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary" style="width:250px;background-color:rebeccapurple" href="/contactdetail/@id">Contact Details</a>
+
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary" style="width:250px;background-color:rebeccapurple" href="/price/@id">Pricing Category</a>
+
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary" style="width:250px;background-color:rebeccapurple" href="/address/@id">Address</a>
+
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary" style="width:250px;background-color:rebeccapurple" href="/image/@id">Thumnail Information</a>
+
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary" style="width:250px;background-color:rebeccapurple" href="/password/@id">Password </a>
+
+        </div>
+    </div>
 </div>
 <div style="width:50%">
 <EditForm Model="ModelProfileVendor">
-<table  class="table table-bordered table-primary">
+<table  class="table table-bordered">
     <tr>
         <td>
             <label>Vendor Businessname: </label>
@@ -157,17 +159,17 @@
 </table>
 </EditForm>
 </div>
-</div>
+
 
 @code {
-    public string id = "1SgF9kEm";
+    public string id = "9BYkbn2Q";
     public static VendorEntity ModelProfileVendor;
     
 
 
     protected override void OnInitialized()
     {
-        ModelProfileVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V("1SgF9kEm");
+        ModelProfileVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V("9BYkbn2Q");
     }
 
    

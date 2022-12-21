@@ -1,0 +1,30 @@
+﻿@using ClassLibraryDAL
+@using ClassLibraryEntity
+@if (PackageList != null)
+{
+    <div class="container-fluid">
+        <div class="row">
+            <h3 class="text-center pt-4">Packages</h3>
+            @foreach (var packages in PackageList)
+            {
+                <div class="col-md-3 mt-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title ">@packages.PakageTitle</h5>
+
+                            <button class="btn btn-primary" type="button">View Package</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+
+
+@code {
+    [Parameter] public List<PackagesEntity> PackageList{ get; set; }
+    public PackagesEntity ModelPackage { get; set; }
+
+}

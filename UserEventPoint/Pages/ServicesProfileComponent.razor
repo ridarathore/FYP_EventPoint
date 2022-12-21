@@ -1,0 +1,38 @@
+﻿@using ClassLibraryDAL
+@using ClassLibraryEntity
+@if (words != null)
+{
+
+    <div  class="container-fluid">
+        
+        <div class="row bg-light">
+            <h3 class="text-center pt-4 ">Services</h3>
+            @foreach (var wor in words)
+            {
+                <div class="col-md-4 py-4">
+                    <div class="card">
+                        <p>  @wor</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+@code {
+    [Parameter] public VenderServicesEntity ModelServices { get; set; }
+    public string[] words;
+
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+    protected void OnLoad()
+    {
+        if (ModelServices.services != null)
+            words = ModelServices.services.Split(',');
+        
+    }
+
+
+
+}

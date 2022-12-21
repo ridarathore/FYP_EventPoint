@@ -11,7 +11,7 @@
         <input type="checkbox" @onchange="(e =>ClassLibraryDAL.CustomLogic.CheckboxClicked(s.Services,e.Value))"/> @s.Services
         <br />
     }
-    <button type="submit" @onclick="UpdateServicesList">Update List</button>-
+    <button type="submit" @onclick="UpdateServicesList">Update List</button>
 </div>
 <div style="width:50%; height:100%; ">
     <h2>Services You Added</h2>
@@ -21,12 +21,8 @@
         <tr>
         <td> <label >@s.services</label> </td>
       
-        </tr>  }
-            @*@foreach(var s in VenderService)
-            {
-                <tr>
-                <td> <label >@s.services</label> </td>     </tr>
-            }*@
+        </tr>  
+        }          
        
     </table>
 </div>

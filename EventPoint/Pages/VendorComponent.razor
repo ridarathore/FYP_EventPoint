@@ -3,8 +3,8 @@
 @using ClassLibraryDAL
 @inject NavigationManager n
 
-<h1>Vendors</h1>
-<h3>Filter record</h3>
+<h1>Manage Vendors</h1>
+
 <div style="display: flex; flex-direction:row" class="dropdown">
 
     <select @bind="@CityId" class="form-select" style="width:20%" required>
@@ -86,7 +86,7 @@
     public string? CategoryId { get; set; }
     public string? StatusCheck { get; set; }
 
-    private int count = 0;
+    //private int count = 0;
 
     protected override void OnInitialized()
     {

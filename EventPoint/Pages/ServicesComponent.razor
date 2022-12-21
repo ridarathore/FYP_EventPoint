@@ -3,8 +3,7 @@
 @inject NavigationManager n
 @using ClassLibraryDAL
 @using ClassLibraryEntity
-
-<h3>Add Services for CategoryID: @Id</h3>
+<h3>Manage Services</h3>
 <EditForm Model="ModelServices" OnSubmit="SaveServices">
     <InputText @bind-Value="ModelServices.Ser_id" Disabled></InputText>
     <InputText @bind-Value="ModelServices.Services" required></InputText>

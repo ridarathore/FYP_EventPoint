@@ -1,0 +1,45 @@
+﻿@page "/"
+@using System.Collections.Generic;
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+@inject NavigationManager nm
+<div class="container-fluid">
+    <div class="row"
+        <p class="p-3 h5">Because in your dream every details matters</p>
+        @foreach (var city in CityList)
+        {
+            <div class="col-md-3 mt-4">
+               
+                    <div class="card cardzoom bg-dark textcolor">
+                    <a  href="userareas/@city.cityid">
+                    <img src="@city.url" class="card-img imagecard " alt="@city.cityname">
+                    <div class="card-img-overlay">
+                        <h3  class="card-title p-3 textcolor">@city.cityname</h3>
+                    </div>
+                    </a>
+                </div>                
+
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+    public List<CityEntity> CityList { get; set; }
+
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+
+    protected void OnLoad()
+    {
+        this.CityList = ClassLibraryDAL.CityDAL.GetCities();
+    }
+    protected void navigateClick(int id)
+    {
+        nm.NavigateTo("/userareas/{@city.cityid}");
+    }
+
+}

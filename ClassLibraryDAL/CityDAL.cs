@@ -26,6 +26,7 @@ namespace ClassLibraryDAL
                 CityEntity city = new CityEntity();
                 city.cityid = sdr["cityid"].ToString();
                 city.cityname = sdr["cityname"].ToString();
+                city.url = sdr["imageurl"].ToString();
 
                 CityList.Add(city);
             }

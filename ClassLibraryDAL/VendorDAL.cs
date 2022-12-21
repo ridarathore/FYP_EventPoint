@@ -329,7 +329,8 @@ namespace ClassLibraryDAL
             cmd.Parameters.AddWithValue("@PakageDetails", pe.PakageDetails);
             cmd.Parameters.AddWithValue("@price", int.Parse(pe.price));
             cmd.Parameters.AddWithValue("@ven_id", pe.ven_id);
-            cmd.Parameters.AddWithValue("@pakageType", pe.pakageType);
+            cmd.Parameters.AddWithValue("@pricetype", pe.pakageType);
+
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.ExecuteNonQuery();
             con.Close();

@@ -1,0 +1,57 @@
+﻿@page "/budget"
+
+@using ClassLibraryDAL
+@using ClassLibraryEntity
+<EditForm Model="@ModelCity">
+    <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 hello shadow-lg">
+            <h2 style="padding-top: 70px;">
+                     Event Planner at your service
+            </h2>
+
+                <p class="fw-bold">Select Your City</p>
+
+            <InputSelect class="filter inputs shadow-lg" style="width:45%" id="cityid" @bind-Value="cityid">
+                <option> --Select City--</option>
+                @foreach (var city in CityList)
+                {
+
+                    <option value="@city.cityid">@city.cityname</option>
+                }
+            </InputSelect>
+            <br /><br />
+            <p>Enter your Budget</p>
+            <input class="inputs shadow-lg" placeholder="Enter Budget"><br><br>
+                <input class="shadow-lg fw-bold" type="checkbox">Venue<br>
+                <input class="inputs shadow-lg" placeholder="Enter total number of people"><br><br>
+
+                <input class="shadow-lg fw-bold" type="checkbox">Photographer<br>
+                <input class="inputs shadow-lg" placeholder="Enter total number of people"><br><br>
+                <input class="shadow-lg fw-bold" type="checkbox">Salon<br>
+                <input class="inputs shadow-lg" placeholder="Enter total number of people"><br><br>
+            
+
+        </div>
+    </div>
+</div>
+</EditForm>
+
+
+@code {
+    public List<CityEntity> CityList{ get; set; }
+
+    public CityEntity ModelCity { get; set; } = new CityEntity();
+    public string cityid{ get; set; }
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+
+    protected void OnLoad()
+    {
+        CityList = ClassLibraryDAL.CityDAL.GetCities();
+
+    }
+
+}

@@ -1,0 +1,29 @@
+﻿@using ClassLibraryDAL
+@using ClassLibraryEntity
+
+
+
+<div class="container-fluid">
+    <div class="row justify-content-md-center bg-warning">
+        <div class="col-md-auto">
+            <p class="h2 justify-content-center pt-5"> @ModelVendor.businessname </p><br />
+            <p class="h4 justify-content-center">Starting From: @ModelVendor.startingPrice / @ModelPriceType.title</p><br /><br />
+            
+        </div>
+
+    </div>
+</div>
+@code {
+    [Parameter] public string Id { get; set; }
+    VendorEntity ModelVendor = new VendorEntity();
+    PriceTypeEntity ModelPriceType = new PriceTypeEntity();
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+    protected void OnLoad()
+    {
+        ModelVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V(Id);
+        ModelPriceType = ClassLibraryDAL.PriceTypeDAL.GetPriceById(ModelVendor.pricetype);
+    }
+}

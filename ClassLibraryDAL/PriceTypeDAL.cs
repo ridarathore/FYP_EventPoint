@@ -38,7 +38,7 @@ namespace ClassLibraryDAL
             con.Open();
 
             SqlCommand cmd = new SqlCommand("SP_GetPriceTypeById", con);
-            cmd.Parameters.AddWithValue("@ptid", pid);
+            cmd.Parameters.AddWithValue("@id", pid);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader sdr = cmd.ExecuteReader();
             while (sdr.Read())

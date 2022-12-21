@@ -1,0 +1,39 @@
+﻿@using System.Collections.Generic;
+@using ClassLibraryEntity
+@using ClassLibraryDAL
+@inject NavigationManager n
+<div class="row">
+    @if (VendorList != null)
+    {
+        @foreach (var vendor in VendorList)
+        {
+        <div class="col-md-3 mt-4">
+
+                <div class="card cardzoom bg-light textcolor">
+                <a class="anchortags" href="porfile/@vendor.ven_id">
+                    <h5 class="card-title">@vendor.businessname</h5>
+                    <p class="card-text">@vendor.startingPrice @vendor.pricetype</p>
+                    <p class="card-text">@vendor.area</p>
+                    <br/><br/>
+                    </a>
+              </div>
+               
+            </div>
+        }
+
+    }
+</div>
+@code {
+   [Parameter] public string Id { get; set; }
+   [Parameter] public List<VendorEntity> VendorList { get; set; }
+    protected override void OnInitialized()
+    {
+        OnLoad();
+    }
+    protected void OnLoad()
+    {
+
+        this.VendorList = ClassLibraryDAL.VendorDAL.GetAllVendorsByCityID(int.Parse(Id));
+    }   
+
+}
