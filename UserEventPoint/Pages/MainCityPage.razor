@@ -3,30 +3,130 @@
 @using ClassLibraryEntity
 @using ClassLibraryDAL
 @inject NavigationManager nm
-<div class="container-fluid">
-    <div class="row"
-        <p class="p-3 h5">Because in your dream every details matter</p>
-        @foreach (var city in CityList)
-        {
-            <div class="col-md-3 mt-4">
-               
-                    <div class="card cardzoom bg-dark textcolor">
-                    <a  href="userareas/@city.cityid">
-                    <img src="@city.url" class="card-img imagecard " alt="@city.cityname">
-                    <div class="card-img-overlay">
-                        <h3  class="card-title p-3 textcolor">@city.cityname</h3>
-                    </div>
-                    </a>
-                </div>                
+@inject IModalService modal
+<div>
+    <h3 class="text-center">
+        Because In Your Dream <br />Every Detail Matters.
+    </h3>
+    <h5 class="text-center text-capitalize">Select Your City</h5>
+</div>
 
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+   
+    <div class="carousel-inner justify-content-center">
+        @for (int i = 0; i < CityList.Count; i += 4)
+        {
+            <div class="carousel-item @((i == 0) ? "active" : "")">
+                <div class="row">
+                    @for (int j = i; j < i + 4 && j < CityList.Count; j++)
+                    {
+                        <div class="col-md-3 card cardzoom mx-3" style="width: 230px;">
+                            <img src="@CityList[j].url" class="card-img imagecard " alt="@CityList[j].cityname">
+                            <div class="card-img-overlay d-flex align-items-end justify-content-center">
+                                <h5 class="text-white align-text-bottom mb-5">@CityList[j].cityname</h5>
+                                <a href="userareas/@CityList[j].cityid" class="button mb-2 fw-bold bg-warning">Get Started</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
             </div>
         }
     </div>
+
+    <button class="carousel-control-prev " type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon " aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
+
+<style>
+    .cardzoom:hover .button {
+        display: block;
+    }
+
+    .button {
+        display: none;
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 10px;       
+            
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    a.hoaver{
+        color:black;
+    }
+    .carousel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 60vh;
+    }
+
+    .carousel-heading {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .carousel-inner {
+        max-width: 1150px;
+    }
+
+    .cardzoom {
+        width: 230px;
+        height: 309px;
+        transition: transform 0.2s ease-out;
+    }
+
+        .cardzoom:hover {
+            transform: scale(1.1);
+        }
+
+    .imagecard {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        
+    }
+
+    a:hover {
+        color: black;}
+    .carousel-inner .active.cardzoom:first-child {
+        margin-left: auto;
+    }
+
+    .carousel-inner .cardzoom {
+        margin-right: 10px;
+    }
+
+        .carousel-inner .cardzoom:last-child {
+            margin-right: 0;
+        }
+
+    .carousel-indicators {
+        bottom: -40px;
+    }
+
+    
+    
+
+</style>
 
 
 @code {
     public List<CityEntity> CityList { get; set; }
+    [CascadingParameter] public string Id { get; set; }
 
     protected override void OnInitialized()
     {
@@ -37,9 +137,4 @@
     {
         this.CityList = ClassLibraryDAL.CityDAL.GetCities();
     }
-    protected void navigateClick(int id)
-    {
-        nm.NavigateTo("/userareas/{@city.cityid}");
-    }
-
 }

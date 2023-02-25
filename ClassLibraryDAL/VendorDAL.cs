@@ -111,7 +111,9 @@ namespace ClassLibraryDAL
                 ve.email = sdr["email"].ToString();
                 ve.City = sdr["cityname"].ToString();
                 ve.Cat_Id = sdr["categoryname"].ToString();
+
                 ve.status = sdr["status"].ToString();
+                                 
                 VendorList.Add(ve);
             }
             con.Close();
@@ -188,7 +190,7 @@ namespace ClassLibraryDAL
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@cityid", int.Parse(cid));
             cmd.Parameters.AddWithValue("@categoryid", int.Parse(cat));
-            cmd.Parameters.AddWithValue("@status", int.Parse(s));
+            cmd.Parameters.AddWithValue("@status", s);
             SqlDataReader sdr = cmd.ExecuteReader();
             List<VendorEntity> VendorList = new List<VendorEntity>();
             while (sdr.Read())
@@ -201,6 +203,8 @@ namespace ClassLibraryDAL
                 ve.email = sdr["email"].ToString();
                 ve.City = sdr["cityname"].ToString();
                 ve.Cat_Id = sdr["categoryname"].ToString();
+               
+               
                 ve.status = sdr["status"].ToString();
 
                 VendorList.Add(ve);
@@ -218,7 +222,7 @@ namespace ClassLibraryDAL
             cmd.ExecuteNonQuery();
             con.Close();
         }
-        public static void ChangeStatus(string id, string status)
+        public static void ChangeStatus(string id, int status)
         {
             SqlConnection con = DBHelper.GetConnection();
             con.Open();

@@ -1,9 +1,11 @@
-﻿@page "/porfile/{Id}"
+﻿@page "/porfile/{Idven}"
 @using ClassLibraryDAL
 @using ClassLibraryEntity
 
+
+
   @*  display heading*@
-   <VendorHeading Id="@Id"></VendorHeading>
+   <VendorHeading Id="@Idven"></VendorHeading>
 
 @*   display contact and description*@
     <div class="container-fluid pt-4">
@@ -24,22 +26,32 @@
 
 
 @code {
-    [Parameter] public string Id { get; set; }
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [Parameter] public string? Idven { get; set; }    
     VendorEntity ModelVendor = new VendorEntity();
     [Parameter] public VenderServicesEntity ModelServices { get; set; }
     [Parameter] public List<PackagesEntity> PackageList { get; set; }
-     
-   
-    protected override void OnInitialized()
+
+
+    protected override Task OnParametersSetAsync()
     {
         OnLoad();
+        StateHasChanged();
+        return base.OnParametersSetAsync();
+    }
+
+
+    protected override void OnInitialized()
+    {
+        //OnLoad();
     }
     protected void OnLoad()
     {
-        ModelVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V(Id);
-        ModelServices = ClassLibraryDAL.ServicesDAL.GetServiceByVendorId(Id);       
+        ModelVendor = ClassLibraryDAL.VendorDAL.GetVendorById_V(Idven);
+        ModelServices = ClassLibraryDAL.ServicesDAL.GetServiceByVendorId(Idven);       
 
-        PackageList = ClassLibraryDAL.PackagesDal.GetPackagesById(Id);
+        PackageList = ClassLibraryDAL.PackagesDal.GetPackagesById(Idven);
         
 
     }

@@ -1,48 +1,107 @@
 ﻿@page "/budget"
-
 @using ClassLibraryDAL
 @using ClassLibraryEntity
-<EditForm Model="@ModelCity">
-    <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8 hello shadow-lg">
-            <h2 style="padding-top: 70px;">
-                     Event Planner at your service
-            </h2>
 
-                <p class="fw-bold">Select Your City</p>
+@*ADD CODE*@
 
-            <InputSelect class="filter inputs shadow-lg" style="width:45%" id="cityid" @bind-Value="cityid">
-                <option> --Select City--</option>
-                @foreach (var city in CityList)
-                {
-
-                    <option value="@city.cityid">@city.cityname</option>
-                }
-            </InputSelect>
-            <br /><br />
-            <p>Enter your Budget</p>
-            <input class="inputs shadow-lg" placeholder="Enter Budget"><br><br>
-                <input class="shadow-lg fw-bold" type="checkbox">Venue<br>
-                <input class="inputs shadow-lg" placeholder="Enter total number of people"><br><br>
-
-                <input class="shadow-lg fw-bold" type="checkbox">Photographer<br>
-                <input class="inputs shadow-lg" placeholder="Enter total number of people"><br><br>
-                <input class="shadow-lg fw-bold" type="checkbox">Salon<br>
-                <input class="inputs shadow-lg" placeholder="Enter total number of people"><br><br>
-            
-
+<div class="container">
+    <div id="card-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row" id="card-row-1">
+                </div>
+            </div>
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#card-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#card-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
 </div>
+
+
+
+
+
+
+@*ADD CODE*@
+<h3>Enter Total amount of your budget</h3>
+<input class="inputs shadow-lg" placeholder="Enter total amount">
+
+<br>
+<br>
+<h3>Priority </h3>
+
+<EditForm Model="@ModalCategory">
+    <div>
+        <InputSelect class="filter shadow-lg" id="CategoryId" @bind-Value="CategoryId">
+            <option> --Select category--</option>
+            @foreach (var category in CategoryList)
+            {
+                <option value="@category.categoryid">@category.categoryname</option>
+            }
+        </InputSelect>
+
+        <button class="btn bg-warning text-dark buttons" @onclick="(e => selectCategory(CategoryId))"> Select </button><br /><br />
+    </div>
+
+    @if (CategoryId != null && ServiceList != null)
+    {
+        <div>
+
+            <InputSelect class="filter shadow-lg" id="ServiceId" @bind-Value="ServiceId">
+                <option> --Select service--</option>
+                @foreach (var services in ServiceList)
+                {
+                    <option value="@services.Ser_id">@services.Services</option>
+                }
+            </InputSelect>
+
+
+        </div>
+
+
+
+        <div>
+
+            <InputSelect class="filter shadow-lg" id="PriceTypeID" @bind-Value="PriceTypeID">
+                <option> --Select Price Type--</option>
+                @foreach (var pricetype in PriceTypeList)
+                {
+                    <option value="@pricetype.ptid">@pricetype.title</option>
+                }
+            </InputSelect>
+
+
+        </div>
+    }
+
 </EditForm>
+
+<h3>Enter Total Number of people</h3>
+<input class="inputs shadow-lg" placeholder="Enter total no of people">
+
 
 
 @code {
-    public List<CityEntity> CityList{ get; set; }
 
+    public CategoryEntity ModalCategory { get; set; } = new CategoryEntity();
+    public List<CategoryEntity> CategoryList { get; set; }
+    public string CategoryId { get; set; }
+    public string ServiceId { get; set; }
+    public List<ServiceEntity> ServiceList { get; set; }
+
+    public List<PriceTypeEntity> PriceTypeList { get; set; }
+    public string PriceTypeID { get; set; }
+
+
+    public List<CityEntity> CityList { get; set; }
     public CityEntity ModelCity { get; set; } = new CityEntity();
-    public string cityid{ get; set; }
+    public string cityid { get; set; }
     protected override void OnInitialized()
     {
         OnLoad();
@@ -51,7 +110,20 @@
     protected void OnLoad()
     {
         CityList = ClassLibraryDAL.CityDAL.GetCities();
+        this.CategoryList = ClassLibraryDAL.CategoryDAL.GetCategories();
+        this.PriceTypeList = ClassLibraryDAL.PriceTypeDAL.GetPriceType();
 
     }
+
+    public void selectCategory(string categoryid)
+    {
+        this.ServiceList = ClassLibraryDAL.ServicesDAL.GetServices(int.Parse(CategoryId));
+        OnLoad();
+
+    }
+
+
+
+
 
 }

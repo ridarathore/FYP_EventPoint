@@ -2,10 +2,13 @@
 @using ClassLibraryEntity
 @using ClassLibraryDAL
 @inject NavigationManager nm
+@using EventPoint.Shared;
 
 <h3>Manage Cities</h3>
 <a class="btn btn-primary" href="/cities/edit/0">Add new City</a>
-<br /><br />
+<br />
+<br />
+<ConfirmBox @ref="confirmBox" UserChoice="ConfirmDelete_Click"></ConfirmBox>
 <table class="table table-secondary table-striped table-bordered text-center">
     <thead class="thead thead-dark ">
         <tr>
@@ -15,14 +18,14 @@
         </tr>
     </thead>
 
-    @foreach(var city in CityList)
+    @foreach (var city in CityList)
     {
         <tr>
             <td>@city.cityid</td>
             <td>@city.cityname</td>
             <td>
                 <a class="btn btn-outline-primary" href="/cities/edit/@city.cityid">Edit City</a>
-                <button class="btn btn-outline-danger" @onclick="(e => OnDelete(city.cityid))">Delete City</button>
+                <button class="btn btn-outline-danger" @onclick="() => Delete_Click(city.cityid)">Delete City</button>
                 <a class="btn btn-outline-secondary" href="areas/@city.cityid">Add City Area</a>
             </td>
         </tr>
@@ -30,7 +33,22 @@
 </table>
 
 @code {
-    public List<CityEntity> CityList{ get; set; }
+    public List<CityEntity> CityList { get; set; }
+    public string city_id { get; set; }
+    ConfirmBox confirmBox;
+
+    public void Delete_Click(string value)
+    {
+        city_id = value;
+        confirmBox.Show("Are you sure you want to delete?");
+    }
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            OnDelete(city_id);
+        }
+    }
 
     protected override void OnInitialized()
     {

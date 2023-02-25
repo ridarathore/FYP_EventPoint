@@ -1,0 +1,45 @@
+﻿@if (ShowBox)
+{
+    <div class="modal fade show d-block" data-bs-keyboard="false" id="exampleModalToggle" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Title</h5>
+                    <button type="button" class="close" @onclick="() => OnChoiceChange(false)" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @Message
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="() => OnChoiceChange(false)" data-dismiss="modal" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" @onclick="() => OnChoiceChange(true)">Delete  </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    public bool ShowBox { get; set; }
+    [Parameter]
+    public string? Message { get; set; } = "Are you sure you want to delete?";
+    [Parameter]
+    public string? Title { get; set; } = "Delete Confirmation";
+    //eve333nt call back flag
+    [Parameter]
+    public EventCallback<bool> UserChoice { get; set; }
+    public void Show(string msg)
+    {
+        Message = msg;
+        ShowBox = true;
+        StateHasChanged();
+    }
+    protected async Task OnChoiceChange(bool value)
+    {
+        //this user choice will send back the value to parent component caling confirmation box
+        ShowBox = false;
+        await UserChoice.InvokeAsync(value);
+    }
+}

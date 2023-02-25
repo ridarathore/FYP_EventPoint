@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.Modal" Version="7.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ClassLibraryDAL\ClassLibraryDAL.csproj" />
     <ProjectReference Include="..\ClassLibraryEntity\ClassLibraryEntity.csproj" />
   </ItemGroup>

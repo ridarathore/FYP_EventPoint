@@ -2,6 +2,7 @@
 @using ClassLibraryEntity
 @using ClassLibraryDAL
 @inject NavigationManager n
+@using EventPoint.Shared;
 
 <h1>Manage Vendors</h1>
 
@@ -36,7 +37,7 @@
 @if (VendorList != null)
 {
 
-    <table class="table table-secondary table-striped table-bordered text-center">
+    <table class="table table-secondary table-striped table-bordered text-center text-sm">
         <thead>
             <tr>
                 <td>Vendor ID</td>
@@ -63,15 +64,27 @@
                 <td>@vendor.Cat_Id</td>
                 <td>@vendor.status</td>
                 <td>
-                    @*<button class = "btn btn-outline-secondary"  @onclick="(e => OnClick(vendor.ven_id,vendor.status))"> @state</button>*@
-                    <button class="btn btn-outline-danger" @onclick="(e => OnDelete(vendor.ven_id))">Remove</button>
+                    <button class="btn btn-secondary" @onclick="(e => UpdateStatus(vendor.ven_id))">@buttonName</button>
+                   @* @if (@vendor.status == "True")
+                    {
+                        <button class="btn btn-danger" @onclick="(e => UpdateStatus(vendor.ven_id,0))">@buttonName</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-success" @onclick="(e => UpdateStatus(vendor.ven_id,1))">@buttonName</button>
+                    }*@
+                </td>
+                <td>
+@*                    <button class = "btn btn-outline-secondary"  @onclick="(e => OnClick(vendor.ven_id,vendor.status))"> @state</button>
+*@                    <button class="btn btn-outline-danger" @onclick="(e => OnDelete(vendor.ven_id))">Delete</button>
                 </td>
             </tr>
         }
 
     </table>
-
 }
+<ConfirmBox @ref="confirmBox" UserChoice="ConfirmDelete_Click"></ConfirmBox>
+
 
 @code {
     public List<VendorEntity>? VendorList { get; set; }
@@ -85,8 +98,22 @@
     public string? CityId { get; set; }
     public string? CategoryId { get; set; }
     public string? StatusCheck { get; set; }
+    private string? buttonName { get; set; }
+    public string ven_id { get; set; }
+    ConfirmBox confirmBox;
 
-    //private int count = 0;
+    public void Delete_Click(string value)
+    {
+        ven_id = value;
+        confirmBox.Show("Are you sure you want to delete?");
+    }
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            OnDelete(ven_id);
+        }
+    }
 
     protected override void OnInitialized()
     {
@@ -98,13 +125,11 @@
         CategoryList = ClassLibraryDAL.CategoryDAL.GetCategories();
         VendorList = null;
     }
-
     public void OnDelete(string id)
     {
         ClassLibraryDAL.VendorDAL.DeleteVendor(id);
         Onload();
     }
-
     public void FilterData()
     {
         VendorList = null;
@@ -113,13 +138,43 @@
             if (CityId != "-1" && CategoryId != "-1" && StatusCheck != "-1")
             {
                 VendorList = ClassLibraryDAL.VendorDAL.GetFilteredVendor(CityId, CategoryId, StatusCheck);
+                if(StatusCheck=="1"){ buttonName = "Deactivate"; }
+                else { buttonName = "Activate"; }
+
             }
         }
-
         else
         {
 
         }
 
     }
+    public void UpdateStatus(string ven_id)
+    {
+
+        if (buttonName == "Activate")
+        {
+            VendorDAL.ChangeStatus(ven_id, 1);
+        }
+        else 
+        {
+            VendorDAL.ChangeStatus(ven_id, 0);
+        }
+        FilterData();
+        //ven = ClassLibraryDAL.VendorDAL.GetVendorById_V(ven_id);
+    }
+    //public void UpdateStatus(string ven_id, int status)
+    //{
+
+    //    if (status == 1)
+    //    {
+    //        VendorDAL.ChangeStatus(ven_id, 1);
+    //    }
+    //    else
+    //    {
+    //        VendorDAL.ChangeStatus(ven_id, 0);
+    //    }
+    //    FilterData();
+    //    //ven = ClassLibraryDAL.VendorDAL.GetVendorById_V(ven_id);
+    //}
 }

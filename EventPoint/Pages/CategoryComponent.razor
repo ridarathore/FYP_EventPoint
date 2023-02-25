@@ -1,12 +1,15 @@
 ﻿@page "/trail"
 @using ClassLibraryEntity
 @using ClassLibraryDAL
+@using EventPoint.Shared;
 @inject NavigationManager nm
-
+@inject IJSRuntime JsRuntime
 
 <h3>Manage Categories</h3>
 <a class="btn btn-primary" href="/catedit/0">Add New Category</a>
-<br /><br />
+<br />
+<br />
+<ConfirmBox @ref="confirmBox" UserChoice="ConfirmDelete_Click"></ConfirmBox>
 <table class="table table-secondary table-striped table-bordered text-center">
     <thead class="thead thead-dark ">
         <tr>
@@ -16,22 +19,32 @@
         </tr>
     </thead>
 
-    @foreach(var cat in CategoryList)
+    @foreach (var cat in CategoryList)
     {
         <tr>
-            <td>@cat.categoryid</td>
+            <td value="cat-id">@cat.categoryid</td>
             <td>@cat.categoryname</td>
             <td>
                 <a class="btn btn-outline-primary" href="/catedit/@cat.categoryid">Edit Category</a>
-                <button class="btn btn-outline-danger" @onclick="(e => OnDelete(cat.categoryid))">Delete Category</button>
+                <button class="btn btn-outline-danger" @onclick="() => Delete_Click(cat.categoryid)">Delete Category</button>
                 <a class="btn btn-outline-secondary" href="services/@cat.categoryid">Add Services</a>
             </td>
         </tr>
     }
 </table>
 @code {
-        public List<CategoryEntity> CategoryList{ get; set; }
-        protected override void OnInitialized()
+    public string cat_id { get; set; }
+    ConfirmBox confirmBox;
+    public List<CategoryEntity> CategoryList { get; set; }
+    public CategoryEntity category { get; set; }
+    public void Delete_Click(string value)
+    {
+        cat_id = value;
+        confirmBox.Show("Are you sure you want to delete?");
+        //category.categoryid = cat_id;
+        //confirmBox.Show("Are you sure you want to delete " + category.categoryname);
+    }
+    protected override void OnInitialized()
     {
         OnLoad();
     }
@@ -40,6 +53,14 @@
     {
         this.CategoryList = ClassLibraryDAL.CategoryDAL.GetCategories();
     }
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            OnDelete(cat_id);
+        }
+    }
+
     public void OnDelete(string Id)
     {
         ClassLibraryDAL.CategoryDAL.DeleteCategory(int.Parse(Id));
@@ -47,3 +68,4 @@
     }
 
 }
+@* @onclick="(e => OnDelete(cat.categoryid))"*@

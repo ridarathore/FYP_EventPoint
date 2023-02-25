@@ -66,11 +66,7 @@
     color: white;
 }
 
-.imagecard {
-    height: 200px;
-    width: 100%;
-    opacity: 0.5;
-}
+
 .anchortags {
     color: black;
     text-decoration: none;
@@ -79,5 +75,7 @@ anchortags:hover {
     transform: scale(1.1);
     color:black;
 }
-
+.custom-modal-overlay {
+    background-color: rgba(255, 0, 0, 0.5);
+}
 

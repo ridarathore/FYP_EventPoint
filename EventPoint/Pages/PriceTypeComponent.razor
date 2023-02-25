@@ -3,6 +3,7 @@
 @inject NavigationManager n
 @using ClassLibraryDAL
 @using ClassLibraryEntity
+@using EventPoint.Shared;
 
 <h3>Price Type</h3>
 
@@ -11,6 +12,7 @@
     <InputText @bind-Value="ModelPriceType.title" required></InputText>
     <button type="submit" class="btn btn-outline-success">@Buttonname</button>
 </EditForm>
+<ConfirmBox @ref="confirmBox" UserChoice="ConfirmDelete_Click"></ConfirmBox>
 
 <br /><br /><br />
 <table class="ttable table-secondary table-striped table-bordered text-center">
@@ -28,7 +30,7 @@
                 <td>@pt.title</td>
                 <td>       
                   <button  class="btn btn-outline-primary" @onclick="(e=>EditPriceType(pt.title,pt.ptid))">Edit Price Type</button>
-                   <button class="btn btn-outline-danger" @onclick ="(e => OnDelete(pt.ptid))" >Delete Price Type</button>
+                <button class="btn btn-outline-danger" @onclick="()=> Delete_Click(pt.ptid)">Delete Price Type</button>
                 </td>
             </tr>
         }
@@ -40,6 +42,21 @@
     private List<PriceTypeEntity> PriceTypeList{ get; set; }
     private PriceTypeEntity? ModelPriceType{ get; set; }
     private string? Buttonname{ get; set; }
+    public string pricetype_id { get; set; }
+    ConfirmBox confirmBox;
+
+    public void Delete_Click(string value)
+    {
+        pricetype_id = value;
+        confirmBox.Show("Are you sure you want to delete?");
+    }
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            OnDelete(pricetype_id);
+        }
+    }
 
     protected override void OnInitialized()
     {

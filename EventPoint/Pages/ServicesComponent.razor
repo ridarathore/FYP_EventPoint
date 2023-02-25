@@ -3,41 +3,60 @@
 @inject NavigationManager n
 @using ClassLibraryDAL
 @using ClassLibraryEntity
+@using EventPoint.Shared;
+<ConfirmBox @ref="confirmBox" UserChoice="ConfirmDelete_Click"></ConfirmBox>
+
 <h3>Manage Services</h3>
+
 <EditForm Model="ModelServices" OnSubmit="SaveServices">
     <InputText @bind-Value="ModelServices.Ser_id" Disabled></InputText>
     <InputText @bind-Value="ModelServices.Services" required></InputText>
     <button type="submit">@Buttonname</button>
 </EditForm>
-<br /><br /><br />
+<br />
+<br />
+<br />
 <table class="table table-secondary table-striped table-bordered text-center">
-        <thead class="thead-dark">
-            <tr>
-                <th> Service ID </th>
-                <th> Service </th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        @foreach (var ser in ServicesList)
-        {
-            <tr>
-                <td>@ser.Ser_id</td>
-                <td>@ser.Services</td>
-                <td>       
-                  <button @onclick="(e=>EditServices(ser.Services,ser.Ser_id))">Edit Service</button>
-                    <button class="btn btn-outline-danger" @onclick ="(e => OnDelete(ser.Ser_id))" >Delete Service</button>
-                </td>
-            </tr>
-        }
+    <thead class="thead-dark">
+        <tr>
+            <th> Service ID </th>
+            <th> Service </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    @foreach (var ser in ServicesList)
+    {
+        <tr>
+            <td>@ser.Ser_id</td>
+            <td>@ser.Services</td>
+            <td>
+                <button @onclick="(e=>EditServices(ser.Services,ser.Ser_id))">Edit Service</button>
+                <button class="btn btn-outline-danger" @onclick="()=> Delete_Click(ser.Ser_id)">Delete Service</button>
+            </td>
+        </tr>
+    }
 </table>
 
-
 @code {
-    [Parameter] public string Id{ get; set; }
-    private List<ServiceEntity> ServicesList{ get; set; }
-    private ServiceEntity? ModelServices{ get; set; }
-    private string? Buttonname{ get; set; }
+    [Parameter] public string Id { get; set; }
+    private List<ServiceEntity> ServicesList { get; set; }
+    private ServiceEntity? ModelServices { get; set; }
+    private string? Buttonname { get; set; }
+    public string servicetype_id { get; set; }
+    ConfirmBox confirmBox;
 
+    public void Delete_Click(string value)
+    {
+        servicetype_id = value;
+        confirmBox.Show("Are you sure you want to delete?");
+    }
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            OnDelete(servicetype_id);
+        }
+    }
     protected override void OnInitialized()
     {
         ModelServices = new ServiceEntity();
@@ -59,7 +78,7 @@
         {
             ModelServices.Cat_Id = Id.ToString();
             CategoryDAL.SaveService(ModelServices);
-             ModelServices = new ServiceEntity();
+            ModelServices = new ServiceEntity();
             Onload();
         }
         else
@@ -70,11 +89,11 @@
             Onload();
         }
     }
-    private void EditServices(string ser,string srid)
+    private void EditServices(string ser, string srid)
     {
         Buttonname = "Update";
         ModelServices.Services = ser;
         ModelServices.Ser_id = srid;
     }
-   
+
 }

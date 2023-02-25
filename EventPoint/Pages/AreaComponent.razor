@@ -8,34 +8,52 @@
     <InputText @bind-Value="ModelArea.area" required></InputText>
     <button type="submit" class="btn btn-outline-success">@Buttonname</button>
 </EditForm>
-<br /><br /><br />
+<br />
+<br />
+<br />
+<ConfirmBox @ref="confirmBox" UserChoice="ConfirmDelete_Click"></ConfirmBox>
 <table class="table table-secondary table-striped table-bordered text-center">
-        <thead class="thead-dark">
-            <tr>
-                <th> Area ID </th>
-                <th> Area </th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        @foreach (var ar in AreaList)
-        {
-            <tr>
-                <td>@ar.areaid</td>
-                <td>@ar.area</td>
-                <td>       
-                  <button  class="btn btn-outline-primary" @onclick="(e=>EditArea(ar.area,ar.areaid))">Edit Area</button>
-                   <button class="btn btn-outline-danger" @onclick ="(e => OnDelete(ar.areaid))" >Delete Area</button>
-                </td>
-            </tr>
-        }
+    <thead class="thead-dark">
+        <tr>
+            <th> Area ID </th>
+            <th> Area </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    @foreach (var ar in AreaList)
+    {
+        <tr>
+            <td>@ar.areaid</td>
+            <td>@ar.area</td>
+            <td>
+                <button class="btn btn-outline-primary" @onclick="(e=>EditArea(ar.area,ar.areaid))">Edit Area</button>
+                <button class="btn btn-outline-danger" @onclick="() => Delete_Click(ar.areaid)">Delete Area</button>
+            </td>
+        </tr>
+    }
 </table>
 
 
 @code {
-    [Parameter] public string Id{ get; set; }
-    private List<AreaEntity> AreaList{ get; set; }
-    private AreaEntity? ModelArea{ get; set; }
-    private string? Buttonname{ get; set; }
+    [Parameter] public string Id { get; set; }
+    private List<AreaEntity> AreaList { get; set; }
+    private AreaEntity? ModelArea { get; set; }
+    private string? Buttonname { get; set; }
+    public string area_id { get; set; }
+    ConfirmBox confirmBox;
+
+    public void Delete_Click(string value)
+    {
+        area_id = value;
+        confirmBox.Show("Are you sure you want to delete?");
+    }
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            OnDelete(area_id);
+        }
+    }
 
     protected override void OnInitialized()
     {
@@ -58,7 +76,7 @@
         {
             ModelArea.cityid = Id.ToString();
             AreaDAL.SaveArea(ModelArea);
-             ModelArea = new AreaEntity();
+            ModelArea = new AreaEntity();
             Onload();
         }
         else
@@ -69,7 +87,7 @@
             Onload();
         }
     }
-    private void EditArea(string area,string arid)
+    private void EditArea(string area, string arid)
     {
         Buttonname = "Update";
         ModelArea.area = area;
@@ -88,4 +106,3 @@
     //    }
     //}
 }
-

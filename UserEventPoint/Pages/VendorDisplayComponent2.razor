@@ -2,6 +2,7 @@
 @using ClassLibraryEntity
 @using ClassLibraryDAL
 @inject NavigationManager n
+@inject IModalService modal
 <div class="row">
     @if (VendorList != null)
     {
@@ -10,12 +11,19 @@
         <div class="col-md-3 mt-4">
 
                 <div class="card cardzoom bg-light textcolor">
-                <a class="anchortags" href="porfile/@vendor.ven_id">
+                <a class="anchortags" href="porfile/@vendor.ven_id" target="_blank">
                     <h5 class="card-title">@vendor.businessname</h5>
                     <p class="card-text">@vendor.startingPrice @vendor.pricetype</p>
                     <p class="card-text">@vendor.area</p>
+
+                        
                     <br/><br/>
                     </a>
+                    <button @onclick="@(()=>{getval(vendor.ven_id);modal.Show<ProfileComponent>("",parameters);})" class="btn btn-primary">View</button>
+
+                   
+@*                    <button @onclick="@(()=>modal.Show<ProfileComponent>("@vendor.ven_id"))" class="btn btn-primary">View</button>
+*@
               </div>
                
             </div>
@@ -24,12 +32,20 @@
     }
 </div>
 @code {
-   [Parameter] public string Id { get; set; }
-   [Parameter] public List<VendorEntity> VendorList { get; set; }
-    protected override void OnInitialized()
+    public static string venid { get; set; }
+
+    public void getval(string id)
     {
-        OnLoad();
+        venid = id;
     }
+    private ModalParameters parameters = new ModalParameters().Add(nameof(ProfileComponent.Idven), "9BYkbn2Q");
+    [Parameter] public string Id { get; set; }
+
+
+    [Parameter] public List<VendorEntity> VendorList { get; set; }
+    protected override void OnInitialized() => OnLoad();
+    
+   
     protected void OnLoad()
     {
 

@@ -1,0 +1,14 @@
+﻿@page "/modalPage"
+@inject IModalService modal
+<h3>ModalComponent</h3>
+<button @onclick="@(()=>modal.Show<LoginComponent>("Modal Popup Exampless",parameters))" class="btn btn-primary">View</button>
+<button @onclick="@(()=>modal.Show<LoginComponent>("Modal Sample"))" class="btn-outline-primary">View modal</button>
+@code {
+
+    private ModalParameters parameters = new ModalParameters()
+    .Add(nameof(LoginComponent.Message), "Hello, World!");
+
+  
+  
+
+}

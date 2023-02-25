@@ -1,10 +1,11 @@
-﻿@page "/login"
+﻿@page "/login/id"
     <div class="container">
         <div class="row justify-content-center"> 
             <div class="col-md-8 hello shadow-lg">
 <h2 style="padding-top: 70px;">LogIn
 </h2>
-<p>SignIn to continue on EventPoint</p>
+<p>SignIn to continue on EventPoint </p>
+            <p>@Message</p>
            
             <input class="inputs shadow-lg"  placeholder="Enter Phone Number"><br><br>
             <input class="inputs shadow-lg"  placeholder="Pin Code"><br><br>
@@ -13,6 +14,7 @@
             <button class="buttonsindex">LogIn</button><br><br><br>
             <a href="signup">Create new account</a>
 
+
         </div>
         </div>
     </div>
@@ -20,5 +22,7 @@
 
 
 @code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [Parameter] public string? Message { get; set; }
 
 }
